@@ -1,11 +1,31 @@
+# Selenium Java Q&A
 
-**1. ImplicitWait**
+## Table of Contents
+- [Wait Strategies](#wait-strategies)
+- [StaleElementException](#staleelementexception)
+- [Pass By Value & Pass By Reference](#pass-by-value--pass-by-reference)
 
+---
+
+## Wait Strategies
+
+### 1. ImplicitWait
+
+Waits implicitly for a specified time before throwing NoSuchElementException.
+
+```java
 driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+```
 
-**2. ExpectedWait**
+---
 
-Package waitExample;
+### 2. ExplicitWait (WebDriverWait)
+
+Waits for a specific condition to occur before proceeding.
+
+```java
+package waitExample;
+
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -14,247 +34,286 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class WaitTest {
+    private WebDriver driver;
+    private String baseUrl;
+    private WebElement element;
 
-private WebDriver driver;
-private String baseUrl;
-private WebElement element;
+    @BeforeMethod
+    public void setUp() throws Exception {
+        driver = new FirefoxDriver();
+        baseUrl = "http://www.google.com";
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    }
 
-@BeforeMethod
-public void setUp() throws Exception {
-driver = new FirefoxDriver();
-baseUrl = "http://www.google.com";
-driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+    @Test
+    public void testUntitled() throws Exception {
+        driver.get(baseUrl);
+        element = driver.findElement(By.id("lst-ib"));
+        element.sendKeys("Selenium WebDriver Interview questions");
+        element.sendKeys(Keys.RETURN);
+        List<WebElement> list = driver.findElements(By.className("_Rm"));
+        System.out.println(list.size());
+    }
+
+    @AfterMethod
+    public void tearDown() throws Exception {
+        driver.quit();
+    }
 }
+```
 
-@Test
-public void testUntitled() throws Exception {
-driver.get(baseUrl);
-element = driver.findElement(By.id("lst-ib"));
-element.sendKeys("Selenium WebDriver Interview questions");
-element.sendKeys(Keys.RETURN);
-List<WebElement> list = driver.findElements(By.className("_Rm"));
-System.out.println(list.size());
+---
 
-}
+### 3. FluentWait
 
-@AfterMethod
-public void tearDown() throws Exception {
-driver.quit();
-}
-}
+A more flexible wait that allows custom polling intervals and exception handling.
 
-
-**3. FluentWait**
-
-//Declare and initialise a fluent wait
+```java
+// Declare and initialise a fluent wait
 FluentWait wait = new FluentWait(driver);
-//Specify the timout of the wait
+
+// Specify the timeout of the wait
 wait.withTimeout(5000, TimeUnit.MILLISECONDS);
-//Sepcify polling time
+
+// Specify polling time
 wait.pollingEvery(250, TimeUnit.MILLISECONDS);
-//Specify what exceptions to ignore
-wait.ignoring(NoSuchElementException.class)
 
-//This is how we specify the condition to wait on.
-//This is what we will explore more in this chapter
+// Specify what exceptions to ignore
+wait.ignoring(NoSuchElementException.class);
+
+// Specify the condition to wait on
 wait.until(ExpectedConditions.alertIsPresent());
+```
 
+---
 
-**4. Script Wait**
-driver.manage().timeouts().setScriptTimeout(100,SECONDS);
+### 4. Script Wait
 
+Sets a timeout for JavaScript execution.
 
-**5. Page Wait**
+```java
+driver.manage().timeouts().setScriptTimeout(100, SECONDS);
+```
+
+---
+
+### 5. Page Load Wait
+
+Sets a timeout for page load completion.
+
+```java
 driver.manage().timeouts().pageLoadTimeout(100, SECONDS);
+```
 
-**6. Thread Wait**
-thread.sleep(1000);
+---
 
+### 6. Thread Sleep
 
+Pauses execution for a specified duration (generally not recommended for test automation).
 
-**StaleElementException**
+```java
+Thread.sleep(1000);
+```
 
+---
 
-1. Use WebDriverWait
+## StaleElementException
 
-  wait.until(ExpectedConditions.presenceOfElementLocated(Web element locator")))
+Occurs when an element reference is no longer valid in the DOM. Here are multiple solutions:
 
-  public class ExplicitWait {
+### Solution 1: Use WebDriverWait with presenceOfElementLocated
 
-public static void main(String[] args) {
+```java
+public class ExplicitWait {
+    public static void main(String[] args) {
+        // Initialize WebDriver
+        WebDriver driver = new ChromeDriver();
 
- 
-
-     // Initialize WebDriver
-
-     WebDriver driver = new ChromeDriver();
-
- 
-
-     // Open the webpage
-
+        // Open the webpage
         driver.get("https://google.com");
 
- 
+        // Create an explicit wait
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-     // Create an explicit wait
+        // Use the explicit wait to handle StaleElementException
+        try {
+            // Wait until the element is present on the page
+            WebElement ele = wait.until(
+                ExpectedConditions.presenceOfElementLocated(By.cssSelector("textarea[name='q']"))
+            );
 
-     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-
- 
-
-     // Use the explicit wait to handle StaleElementException
-
-     try {
-
-         // Wait until the element is present on the page
-
-         WebElement ele = wait
-
-                    .until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("textarea[name='q']")));   
-
- 
-
-         // Perform the action on the element
-
+            // Perform the action on the element
             ele.sendKeys("Selenium");
-
             System.out.println("Search text entered successfully.");
 
-     } catch (org.openqa.selenium.StaleElementReferenceException e) {
-
-         // Element became stale, handle accordingly
-
+        } catch (org.openqa.selenium.StaleElementReferenceException e) {
+            // Element became stale, handle accordingly
             System.out.println("StaleElementException occurred. Refreshing the page.");
 
- 
+            // Refresh the page
+            // driver.navigate().refresh();
 
-         // Refresh the page
-
-         // driver.navigate().refresh();
-
- 
-
-         // Re-locate the element after page refresh
-
-         WebElement refreshedEle = driver.findElement(By.cssSelector("textarea[name='q']"));
-
+            // Re-locate the element after page refresh
+            WebElement refreshedEle = driver.findElement(By.cssSelector("textarea[name='q']"));
             refreshedEle.sendKeys("Selenium");
-
             System.out.println("Search text entered successfully after page refresh.");
+        }
 
-     }
-
- 
-
-     // Close the browser
-
-     driver.quit();
-
+        // Close the browser
+        driver.quit();
+    }
 }
+```
 
-}
+#### Method 2: Using refreshed() ExpectedCondition
 
+```java
+WebElement ele = wait.until(
+    ExpectedConditions.refreshed(
+        ExpectedConditions.presenceOfElementLocated(By.cssSelector("textarea[name='q']"))
+    )
+);
+```
 
-Method 2: Wait until the element is refreshed 
+---
 
-WebElement ele = wait.until(ExpectedConditions.refreshed(ExpectedConditions.presenceOfElementLocated(By.cssSelector("textarea[name='q']"))));
+### Solution 2: Use Try-Catch Block
 
+Re-locate the element after handling the exception.
 
-2. Use the try-catch block
-  WebElement element = driver.findElement(By.id("web element locator"));
+```java
+WebElement element = driver.findElement(By.id("web-element-locator"));
 
-try {  
-
-  element.click();
-
+try {
+    element.click();
 } catch (StaleElementReferenceException e) {
+    // Refresh the page
+    driver.navigate().refresh();
 
-  // Refresh the page
-
-  driver.navigate().refresh();
-
- 
-
-  // Try to locate the element again
-
-  element = driver.findElement(By.id("web element locator "));
-
-  element.click();
-
+    // Try to locate the element again
+    element = driver.findElement(By.id("web-element-locator"));
+    element.click();
 }
+```
 
-4. Use Page Object Model
+---
 
-   Page Factory initializes the page elements lazily which means they are initialized only when they are accessed within page methods.
+### Solution 3: Use Page Object Model with Page Factory
 
-If the elements become stale, it will automatically reinitialize it whenever it is accessed the next time.
+Page Factory initializes page elements lazily (only when accessed). If elements become stale, they are automatically reinitialized on the next access.
 
+```java
+// Elements are initialized lazily and refreshed automatically
+```
 
+---
 
-5. Refresh the web page
+### Solution 4: Refresh the Web Page
 
+```java
+driver.navigate().refresh();
+```
 
+---
 
+## Pass By Value & Pass By Reference
 
-**Pass By Val & Pass By Reference**
+### Pass By Value
 
+Does not change the scope of original variables. Changes made inside the method are local.
 
-Pass By Value does not change scope of original variables-
-public class Tester{
-   public static void main(String[] args){
-      int a = 30;
-      int b = 45;
-      System.out.println("Before swapping, a = " + a + " and b = " + b);
-      // Invoke the swap method
-      swapFunction(a, b);
-      System.out.println("\n**Now, Before and After swapping values will be same here**:");
-      System.out.println("After swapping, a = " + a + " and b is " + b);
-   }
-   public static void swapFunction(int a, int b) {
-      System.out.println("Before swapping(Inside), a = " + a + " b = " + b);
-      // Swap n1 with n2
-      int c = a;
-      a = b;
-      b = c;
-      System.out.println("After swapping(Inside), a = " + a + " b = " + b);
-   }
+```java
+public class Tester {
+    public static void main(String[] args) {
+        int a = 30;
+        int b = 45;
+        System.out.println("Before swapping, a = " + a + " and b = " + b);
+        
+        // Invoke the swap method
+        swapFunction(a, b);
+        
+        System.out.println("\n**Now, Before and After swapping values will be same here**:");
+        System.out.println("After swapping, a = " + a + " and b is " + b);
+    }
+
+    public static void swapFunction(int a, int b) {
+        System.out.println("Before swapping(Inside), a = " + a + " b = " + b);
+        
+        // Swap a with b
+        int c = a;
+        a = b;
+        b = c;
+        
+        System.out.println("After swapping(Inside), a = " + a + " b = " + b);
+    }
 }
+```
 
-Output
- 
+**Output:**
+```
 Before swapping, a = 30 and b = 45
 Before swapping(Inside), a = 30 b = 45
 After swapping(Inside), a = 45 b = 30
 **Now, Before and After swapping values will be same here**:
 After swapping, a = 30 and b is 45
+```
 
+---
 
-**Call by Reference”** means passing a reference (i.e. memory address) of the object by value to a method
+### Pass By Reference
 
+Passing a reference (memory address) of an object by value to a method. Changes affect the original object.
+
+```java
 public class JavaTester {
-   public static void main(String[] args) {
-      IntWrapper a = new IntWrapper(30);
-      IntWrapper b = new IntWrapper(45);
-      System.out.println("Before swapping, a = " + a.a + " and b = " + b.a);
-      // Invoke the swap method
-      swapFunction(a, b);
-      System.out.println("\n**Now, Before and After swapping values will be different here**:");
-      System.out.println("After swapping, a = " + a.a + " and b is " + b.a);
-   }
-   public static void swapFunction(IntWrapper a, IntWrapper b) {
-      System.out.println("Before swapping(Inside), a = " + a.a + " b = " + b.a);
-      // Swap n1 with n2
-      IntWrapper c = new IntWrapper(a.a);
-      a.a = b.a;
-      b.a = c.a;
-      System.out.println("After swapping(Inside), a = " + a.a + " b = " + b.a);
-   }
+    public static void main(String[] args) {
+        IntWrapper a = new IntWrapper(30);
+        IntWrapper b = new IntWrapper(45);
+        System.out.println("Before swapping, a = " + a.a + " and b = " + b.a);
+        
+        // Invoke the swap method
+        swapFunction(a, b);
+        
+        System.out.println("\n**Now, Before and After swapping values will be different here**:");
+        System.out.println("After swapping, a = " + a.a + " and b is " + b.a);
+    }
+
+    public static void swapFunction(IntWrapper a, IntWrapper b) {
+        System.out.println("Before swapping(Inside), a = " + a.a + " b = " + b.a);
+        
+        // Swap a with b
+        IntWrapper c = new IntWrapper(a.a);
+        a.a = b.a;
+        b.a = c.a;
+        
+        System.out.println("After swapping(Inside), a = " + a.a + " b = " + b.a);
+    }
 }
+
 class IntWrapper {
-   public int a;
-   public IntWrapper(int a){ this.a = a;}
+    public int a;
+    
+    public IntWrapper(int a) {
+        this.a = a;
+    }
 }
+```
 
+**Output:**
+```
+Before swapping, a = 30 and b = 45
+Before swapping(Inside), a = 30 b = 45
+After swapping(Inside), a = 45 b = 30
+**Now, Before and After swapping values will be different here**:
+After swapping, a = 45 and b is 30
+```
 
+---
 
+## Key Takeaways
+
+- **ImplicitWait**: Simple but applies globally to all elements
+- **ExplicitWait**: More flexible, condition-based, recommended approach
+- **FluentWait**: Most flexible with custom polling and exception handling
+- **StaleElementException**: Handle with WebDriverWait, try-catch, or Page Factory
+- **Pass by Value vs Reference**: Primitives use pass by value; objects use pass by reference
