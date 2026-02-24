@@ -461,6 +461,58 @@ aligned with real-world user interactions
 report with production like details /steps passed failed
 
 
+-How u handle failed test cases
+
+Configure Only Failed Test Cases in Selenium TestNG
+<img width="340" height="601" alt="image" src="https://github.com/user-attachments/assets/5f3b6342-3aa6-4fe3-a912-1459077fd031" />
+
+And later run below command 
+Java –cp "C:\Users\User\Desktop\Guru99\TestProject\lib\*;
+C:\Users\User\Desktop\Guru99\TestProject\bin" org.testng.TestNG test-output/testng-failed.xml
+
+Re-insert finding the element with retry logic in  catch block 
+
+
+-How to run tc Parellel
+Configure the testng.xml file
+or use annotations
+DataProvider
+ensure your code is thread-safe (especially for Selenium WebDriver instances).
+You can run:
+Methods in parallel
+Classes in parallel
+Tests in parallel
+
+Example - 
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="ParallelSuite" parallel="methods" thread-count="3">
+    <test name="ParallelTest">
+        <classes>
+            <class name="tests.SampleTest"/>
+        </classes>
+    </test>
+</suite>
+
+
+Parallel Execution with DataProvider
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+public class ParallelDataProviderTest {
+
+    @DataProvider(name = "data", parallel = true)
+    public Object[][] getData() {
+        return new Object[][] {
+            {"User1"}, {"User2"}, {"User3"}
+        };
+    }
+
+    @Test(dataProvider = "data")
+    public void testUsers(String user) {
+        System.out.println(user + " running on Thread: " + Thread.currentThread().getId());
+    }
+}
+
 
 
 
