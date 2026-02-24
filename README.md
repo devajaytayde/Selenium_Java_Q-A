@@ -310,6 +310,70 @@ After swapping, a = 45 and b is 30
 
 ---
 
+**Q. Can a Constructor Be Static in Java?**
+```
+A. No, as Static keyword applies to Class not for Object level
+
+---
+
+**Inheritance and Constructor Chaining: **
+```
+In Java, constructors are not inherited by subclasses. However, when a subclass is instantiated, the superclass constructor is implicitly called through constructor chaining. If a constructor were static, it would not be accessible to subclasses, violating the principles of inheritance and object initialization.
+
+---
+  
+
+
+// Online Java Compiler
+// Use this editor to write, compile and run your Java code online
+
+class Main {
+    static int  classvar = 300;
+    
+    static 
+    {
+        System.out.println("Static variable" + classvar);
+        classvar = 200;
+         System.out.println("Static variable" + classvar);
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("Static variable" + classvar);
+        
+    }
+    
+}
+
+## Main method can be overloaded but it will only execute Strings[] arg  one
+class Main extends Parent {
+    
+    int mainvar = 100;
+    Main()
+    {
+         System.out.println("Sub Class Constructor");
+    }
+    
+    public static   void  main(String[] args) {
+       
+        Main mn = new Main();
+    }
+    
+    public static   void  main(String args) {
+       
+            System.out.println("Non main will not exeute");
+    }
+}
+
+
+
+## Contructor can not be Abstract, because, constructor can not be overridden 
+
+
+## Constructor can not be Final, because, constructors are not inherited in java
+
+
+
+
 ## Key Takeaways
 
 - **ImplicitWait**: Simple but applies globally to all elements
