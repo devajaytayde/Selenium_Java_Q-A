@@ -372,6 +372,97 @@ class Main extends Parent {
 ## Constructor can not be Final, because, constructors are not inherited in java
 
 
+## Runtime Polymorphism/ Dynamic Method Dispatch/Method Overriding
+In Java, method overriding is used when a subclass needs to provide its own specific implementation of a method that is already defined in its parent (super) class.
+
+Here’s why we override methods:
+
+**1. To Achieve Runtime Polymorphism**
+Overriding allows Java to decide at runtime which method implementation to call, based on the actual object type, not the reference type.
+This enables dynamic method dispatch.
+
+**2. To Change or Extend Behavior**
+Sometimes the default behavior in the parent class is not suitable for the subclass.
+By overriding, the subclass can modify or enhance the method’s functionality.
+
+**3. To Implement Specific Behavior for a Subclass**
+Different subclasses can have different implementations of the same method, while sharing the same method signature.
+
+Note: Override keyword is used specificaly to ensure the method is correctly overridden, catching errors like typos.
+Example:
+Java
+
+Copy code
+class Animal {
+    void sound() {
+        System.out.println("Animal makes a sound");
+    }
+}
+
+class Dog extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    void sound() {
+        System.out.println("Cat meows");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal a1 = new Dog(); // Runtime decides Dog's sound()
+        Animal a2 = new Cat(); // Runtime decides Cat's sound()
+
+        a1.sound(); // Output: Dog barks
+        a2.sound(); // Output: Cat meows
+    }
+}
+Key Points About Overriding
+Method name, parameters, and return type must be exactly the same as in the parent class.
+The overridden method cannot have a more restrictive access modifier.
+Only inherited methods can be overridden (not static, final, or private methods).
+Supports runtime polymorphism.
+
+
+**Why We Can't Override Static Methods in Java**
+```
+Static methods are resolved at compile time, not runtime.
+ it is not considered overriding but method hiding.
+class Parent {
+   public static void display() {
+       System.out.println("Static method in Parent");
+   }
+}
+class Child extends Parent {
+   public static void display() {
+       System.out.println("Static method in Child");
+   }
+}
+public class Test {
+   public static void main(String[] args) {
+       Parent obj = new Child();
+       obj.display(); // Outputs: Static method in Parent
+   }
+}
+
+---
+
+---
+---
+
+## Serenity Screenplay Pattern with Selenium
+emphasizes roles, tasks, and outcomes
+aligned with real-world user interactions
+report with production like details /steps passed failed
+
+
+
+
 
 
 ## Key Takeaways
