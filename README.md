@@ -1,9 +1,9 @@
 
-**1. ImplicitWait - **
+**1. ImplicitWait**
 
 driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-**2. ExpectedWait  - **
+**2. ExpectedWait**
 
 Package waitExample;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +44,7 @@ driver.quit();
 }
 
 
-**3. FluentWait - **
+**3. FluentWait**
 
 //Declare and initialise a fluent wait
 FluentWait wait = new FluentWait(driver);
@@ -60,11 +60,11 @@ wait.ignoring(NoSuchElementException.class)
 wait.until(ExpectedConditions.alertIsPresent());
 
 
-**4. Script Wait - **
+**4. Script Wait**
 driver.manage().timeouts().setScriptTimeout(100,SECONDS);
 
-**5. Page Wait - **
+**5. Page Wait**
 driver.manage().timeouts().pageLoadTimeout(100, SECONDS);
 
-**6. Thread Wait - **
+**6. Thread Wait**
 thread.sleep(1000);
