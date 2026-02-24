@@ -453,7 +453,30 @@ public class Test {
 ---
 
 ---
----
+**TestNG Annnotation and order of lifecycle**
+```
+**@BeforeSuite**: Executes before all tests in the suite.
+```
+
+**@BeforeTest:** Executes before the tests defined in tags of the TestNG XML file.
+```
+**@BeforeClass:** Executes before the first method in the current class is invoked.
+```
+**@BeforeMethod:** Executes before each test method.
+```
+**@Test:** The actual test method that gets executed.
+```
+**@AfterMethod:** Executes after each test method.
+```
+**@AfterClass:** Executes after all methods in the current class are executed.
+```
+**@AfterTest:** Executes after the tests defined in tags of the TestNG XML file are executed.
+```
+**@AfterSuite:** Executes after all tests in the suite are finished.
+```
+
+
+
 
 ## Serenity Screenplay Pattern with Selenium
 emphasizes roles, tasks, and outcomes
