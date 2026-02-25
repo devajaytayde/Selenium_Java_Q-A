@@ -571,6 +571,11 @@ local terminal -> main branch -> This is main - update [git add . --> git commit
 local terminal -> develop branch -> git merge main --> Merge Conflict error
 
 
+# A branching strategy is a set of guidelines 
+GitFlow: feature branch, hotfix branch, develop branch for stable project
+Trunk-based: working on main branch only for rapid dev
+Feature branching: each new feature/bug to new branch, once test/fix, merge to main branch for large project
+GithubFlow: Dev create feature branch, merge with main, deploy immediately , for small project
 
 
 ## Key Takeaways
