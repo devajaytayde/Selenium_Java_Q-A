@@ -550,6 +550,8 @@ git branch --d branch_name
 # Check status of deletion or list branch names
 git branch -a # Lists local and remote branches
 git branch -r # Lists only remote branches
+
+# If any other local clones exists, cleaup using below 
 git fetch --prune 
 git remote prune origin
 
@@ -558,8 +560,11 @@ git checkout -b develop
 git push -u origin develop
 git push origin currentbranch:newbranchname
 
-
 #
+
+
+# Delete last commit in Local branch and move changes to stage env
+git reset --soft HEAD~1
 
 
 
