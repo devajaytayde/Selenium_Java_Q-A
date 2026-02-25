@@ -560,11 +560,15 @@ git checkout -b develop
 git push -u origin develop
 git push origin currentbranch:newbranchname
 
-#
-
 
 # Delete last commit in Local branch and move changes to stage env
 git reset --soft HEAD~1
+
+# Resolve Merge Conflict
+local terminal -> main branch -> This is main [commit]
+local terminal -> develop branch -> This is feature [commit]
+local terminal -> main branch -> This is main - update [git add . --> git commit -am "main update"]
+local terminal -> develop branch -> git merge main --> Merge Conflict error
 
 
 
