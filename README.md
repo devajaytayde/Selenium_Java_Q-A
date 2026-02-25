@@ -579,8 +579,66 @@ GithubFlow: Dev create feature branch, merge with main, deploy immediately , for
 
 # Any scenario where finally block is not executed - System.exit(0)
 
-#
+# What are dynamic elements and how to handle dynamic element
+> Stale object loaded after sometime
+> AJAX objects
 
+Solution:
+> Use of Relative Xpath, Contains methods
+> Use of ExpectedConditions, WebDriverWait methods
+> Use Try-Catch-Retry logic
+> Using POM as elements are located based on 
+
+## why to use finally block in test automation
+> Clean up activity
+> Provide better logging for error/exceptions details
+
+## What Are Exceptions?
+
+invalid user input, missing files, network failures, or division by zero, 
+
+            Checked exceptions: At compile time
+            
+                        IOException, SQLException
+            
+            Un-Checked excpetion: AT Run time
+            
+                        NullPointerException, ArithmeticException
+
+
+
+
+Run vs Start method in Thread
+Always use start() to begin a new thread; calling run() directly will not start a new thread
+
+start() → Multithreading behavior.
+run() → Normal method call, no multithreading.
+class MyThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Running in: " + Thread.currentThread().getName());
+    }
+}
+
+public class ThreadDemo {
+    public static void main(String[] args) {
+        MyThread t1 = new MyThread();
+
+        // Using start()
+        t1.start(); // Creates a new thread
+        System.out.println("After start(): " + Thread.currentThread().getName());
+
+        // Using run()
+        t1.run(); // Runs in main thread
+        System.out.println("After run(): " + Thread.currentThread().getName());
+    }
+}
+
+
+Running in: Thread-0
+After start(): main
+Running in: main
+After run(): main
 ## Key Takeaways
 
 - **ImplicitWait**: Simple but applies globally to all elements
