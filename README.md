@@ -538,26 +538,28 @@ public class ParallelDataProviderTest {
 
 **Git Commands**
 
-1. Delete a remote branch
+# Delete a remote branch
 git push origin --delete branch_name
 git push origin --d branch_name
 Note- Make sure you are not currently on the branch you’re deleting.
 
-2. Delete a local branch
+# Delete a local branch
 git branch --delete branch_name
 git branch --d branch_name
 
-3. Check status of deletion
+# Check status of deletion or list branch names
 git branch -a # Lists local and remote branches
 git branch -r # Lists only remote branches
+git fetch --prune 
+git remote prune origin
 
 # Create a new branch in local and push to rmeote
 git checkout -b develop
 git push -u origin develop
+git push origin currentbranch:newbranchname
 
 
-
-
+#
 
 
 
