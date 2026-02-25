@@ -577,6 +577,9 @@ Trunk-based: working on main branch only for rapid dev
 Feature branching: each new feature/bug to new branch, once test/fix, merge to main branch for large project
 GithubFlow: Dev create feature branch, merge with main, deploy immediately , for small project
 
+# Any scenario where finally block is not executed - System.exit(0)
+
+#
 
 ## Key Takeaways
 
