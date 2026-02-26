@@ -641,8 +641,38 @@ Running in: main
 After run(): main
 
 
-## 
+##   
+--3rd highest amouunt 
 
+SELECT amount
+FROM orders
+where amount < (select max(amount) from orders where amount <(select max(amount)from orders) order by 1 desc) 
+order by 1 desc limit 1
+
+
+or 
+
+select amount from orders as outt
+where 3-2 = (select count( distinct(amount)) from orders as inn  where inn.amount > outt.amount)
+
+
+## Duplicate values
+select amount from orders
+group by amount
+having count(*) >1
+
+##Union - Fetch all rows from both tables , but filter unique records
+##UnionAll - Fetch all rows from both tables , but not filter unique records
+##Intersect - Fetch only common rows from both tables
+##Minus - Fetch only unique rows of first table which are not matching with second table
+
+
+##TestNG + SureFire Pluggin for Unit test and report generation
+
+## Listner is used to make output on console/reporting that OnTestFail, OnTestPass, OnTestSkipped, etc. what was happened in TestNG execution
+## Lisnter annotation to enter in file want to add, or in Testng.xml file under Suite name , enter Lisnter.java class details
+
+## 
 
 
 ## Key Takeaways
