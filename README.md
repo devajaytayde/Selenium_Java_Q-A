@@ -672,7 +672,111 @@ having count(*) >1
 ## Listner is used to make output on console/reporting that OnTestFail, OnTestPass, OnTestSkipped, etc. what was happened in TestNG execution
 ## Lisnter annotation to enter in file want to add, or in Testng.xml file under Suite name , enter Lisnter.java class details
 
-## 
+## ITestFaliedLisnter
+
+## Data provide to pass one method data to another
+@DataProvider(name = "dataProvider")
+public Object[][] dataProvider() {
+    return new Object[][] {{ "Data from Test Method 1" }};
+}
+
+@Test(dataProvider = "dataProvider")
+public void testMethod1(String data) {
+    // Process and output data
+    System.out.println(data);
+}
+
+@Test(dependsOnMethods = "testMethod1")
+public void testMethod2() {
+    // Here you would typically retrieve the output from testMethod1
+    // e.g., using shared static variables or other means
+    System.out.println("Utilizing data from testMethod1 in testMethod2");
+}
+
+
+## How to parse String to Int with and without Parse function -
+
+1. Using Integer.parseInt() (Recommended)
+Java
+
+Copy code
+public class StringToIntExample {
+    public static void main(String[] args) {
+        String str = "123";
+        try {
+            int number = Integer.parseInt(str); // Converts string to int
+            System.out.println("Converted number: " + number);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format: " + str);
+        }
+    }
+}
+✅ Pros: Fast, built-in, handles negatives.
+⚠ Cons: Throws NumberFormatException if invalid.
+
+2. Using Integer.valueOf()
+Java
+
+Copy code
+public class StringToIntExample2 {
+    public static void main(String[] args) {
+        String str = "456";
+        try {
+            int number = Integer.valueOf(str); // Returns Integer object, auto-unboxed to int
+            System.out.println("Converted number: " + number);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format: " + str);
+        }
+    }
+}
+✅ Pros: Similar to parseInt(), but returns Integer object.
+⚠ Cons: Slightly slower due to object creation.
+
+3. Manual Conversion Without parseInt()
+If you want to avoid built-in parsing methods, you can manually convert:
+
+Java
+
+Copy code
+public class ManualStringToInt {
+    public static void main(String[] args) {
+        String str = "789";
+        try {
+            int number = stringToInt(str);
+            System.out.println("Converted number: " + number);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static int stringToInt(String str) {
+        if (str == null || str.isEmpty()) {
+            throw new IllegalArgumentException("String is null or empty");
+        }
+
+        int result = 0;
+        boolean isNegative = false;
+        int i = 0;
+
+        // Handle negative numbers
+        if (str.charAt(0) == '-') {
+            isNegative = true;
+            i = 1;
+        }
+
+        for (; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                throw new IllegalArgumentException("Invalid character: " + c);
+            }
+            result = result * 10 + (c - '0');
+        }
+
+        return isNegative ? -result : result;
+    }
+
+
+
 
 
 ## Key Takeaways
