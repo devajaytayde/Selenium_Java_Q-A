@@ -776,7 +776,9 @@ public class ManualStringToInt {
     }
 
 
-##
+##TestNG Command line run
+mvn test -DsuiteXmlFile="testng.xml"
+
 
 
 
