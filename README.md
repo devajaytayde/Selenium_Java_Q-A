@@ -778,6 +778,8 @@ public class ManualStringToInt {
 
 ##TestNG Command line run
 mvn test -DsuiteXmlFile="testng.xml"
+mvn clean test
+mvn clean test -Dcucumber.filter.tags="@api"
 
 
 
